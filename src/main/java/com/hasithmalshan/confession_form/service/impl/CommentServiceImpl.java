@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -18,8 +19,12 @@ public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
 
     @Override
-    public Comment createComment(Comment comment) {
-        return commentRepository.save(comment);
+    public CommentDTO createComment(CommentDTO commentDTO) {
+        Comment comment = new Comment();
+        comment.setContent(commentDTO.getContent());
+        // Set other fields from DTO to entity
+        Comment savedComment = commentRepository.save(comment);
+        return convertToDTO(savedComment);
     }
 
     @Override
@@ -29,24 +34,27 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> getAllComments() {
-        return commentRepository.findAll();
+    public List<CommentDTO> getAllComments() {
+        return commentRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<Comment> getCommentsByPostId(Long postId) {
-        return commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
+    public List<CommentDTO> getCommentsByPostId(Long postId) {
+        return commentRepository.findByPostIdOrderByCreatedAtDesc(postId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public List<Comment> getCommentsByUserId(Long userId) {
-        return commentRepository.findByUserId(userId);
+    public List<CommentDTO> getCommentsByUserId(Long userId) {
+        return commentRepository.findByUserId(userId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
-    public Comment updateComment(Long id, Comment comment) {
-        comment.setId(id);
-        return commentRepository.save(comment);
+    public CommentDTO updateComment(Long id, CommentDTO commentDTO) {
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        comment.setContent(commentDTO.getContent());
+        // Update other fields
+        Comment updatedComment = commentRepository.save(comment);
+        return convertToDTO(updatedComment);
     }
 
     @Override
@@ -59,16 +67,11 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.existsById(id);
     }
 
-    @Override
-    public CommentDTO convertToDTO(Comment comment) {
+    private CommentDTO convertToDTO(Comment comment) {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setContent(comment.getContent());
-        commentDTO.setUserId(comment.getUser().getId());
-        commentDTO.setPostId(comment.getPost().getId());
-        commentDTO.setCreatedAt(comment.getCreatedAt());
-        commentDTO.setUpdatedAt(comment.getUpdatedAt());
+        // Map other fields
         return commentDTO;
     }
 }
-
