@@ -1,0 +1,72 @@
+package com.hasithmalshan.confession_form.controller;
+
+import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.model.Post;
+import com.hasithmalshan.confession_form.service.PostService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/post")
+@RequiredArgsConstructor
+public class PostController {
+    private final PostService postService;
+
+    @PostMapping
+    public ResponseEntity<PostDTO> createPost(@RequestBody Post post) {
+        PostDTO createdPost = postService.createPost(post);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PostDTO> getPostById(@PathVariable Long id) {
+        PostDTO postDTO = postService.getPostById(id);
+        if (postDTO != null) {
+            return ResponseEntity.ok(postDTO);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Post>> getAllPosts() {
+        List<Post> posts = postService.getAllPosts();
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<Post>> getPostsByUserId(@PathVariable Long userId) {
+        List<Post> posts = postService.getPostsByUserId(userId);
+        if (!posts.isEmpty()) {
+            return ResponseEntity.ok(posts);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post post) {
+        Post updatedPost = postService.updatePost(id, post);
+        if (updatedPost != null) {
+            return ResponseEntity.ok(updatedPost);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        if (postService.postExists(id)) {
+            postService.deletePost(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/check/{id}")
+    public ResponseEntity<Boolean> postExists(@PathVariable Long id) {
+        boolean exists = postService.postExists(id);
+        return ResponseEntity.ok(exists);
+    }
+}
