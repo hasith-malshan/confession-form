@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,8 +23,9 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> getCommentById(Long id) {
-        return commentRepository.findById(id);
+    public CommentDTO getCommentById(Long id) {
+        Comment foundComment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        return convertToDTO(foundComment);
     }
 
     @Override

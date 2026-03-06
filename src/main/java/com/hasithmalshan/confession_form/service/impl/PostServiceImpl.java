@@ -19,13 +19,15 @@ public class PostServiceImpl implements PostService {
     private final PostRepository postRepository;
 
     @Override
-    public Post createPost(Post post) {
-        return postRepository.save(post);
+    public PostDTO createPost(Post post) {
+        Post saved = postRepository.save(post);
+        return convertToDTO(saved);
     }
 
     @Override
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
+    public PostDTO getPostById(Long id) {
+        Post byId = postRepository.findById(id).orElseThrow(()-> new RuntimeException("Post not found with id: " + id));
+        return convertToDTO(byId);
     }
 
     @Override
