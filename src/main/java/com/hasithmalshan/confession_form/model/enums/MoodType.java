@@ -1,0 +1,32 @@
+package com.hasithmalshan.confession_form.model.enums;
+
+public enum MoodType {
+    HAPPY,
+    SAD,
+    EXCITED,
+    BORED,
+    ANGRY,
+    TIRED,
+    RELAXED,
+    STRESSED,
+    LOVED,
+    GRATEFUL,
+    HOPEFUL,
+    LONELY,
+    CONFUSED,
+    SURPRISED,
+    SILLY,
+    ROMANTIC,
+    PRODUCTIVE,
+    LAZY,
+    ENERGETIC,
+    CALM,
+    ANXIOUS,
+    INSPIRED,
+    CREATIVE,
+    CURIOUS,
+    FRUSTRATED,
+    NOSTALGIC,
+    PLAYFUL,
+    PEACEFUL
+}
