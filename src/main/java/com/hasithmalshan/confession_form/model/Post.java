@@ -31,6 +31,17 @@ public class Post {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @Column(nullable = false)
+    private String content;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private String mood;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private String category;
+
     @UpdateTimestamp
     private LocalDateTime updatedAt;
 
