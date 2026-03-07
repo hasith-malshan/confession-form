@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,13 +48,24 @@ public class PostReactServiceImpl implements PostReactService {
         if (result.isEmpty()) return null;
 
         PostReactResponseDTO postReactResponseDTO = new PostReactResponseDTO();
-        postReactResponseDTO.setPostId(postId);
-        postReactResponseDTO.setAngryCount(result.get(0).getCount());
-        postReactResponseDTO.setHahaCount(result.get(1).getCount());
-        postReactResponseDTO.setLikeCount(result.get(2).getCount());
-        postReactResponseDTO.setLoveCount(result.get(3).getCount());
-        postReactResponseDTO.setSadCount(result.get(4).getCount());
-        postReactResponseDTO.setWowCount(result.get(5).getCount());
+        postReactResponseDTO.setPostId(0L);
+        postReactResponseDTO.setAngryCount(0L);
+        postReactResponseDTO.setHahaCount(0L);
+        postReactResponseDTO.setLikeCount(0L);
+        postReactResponseDTO.setLoveCount(0L);
+        postReactResponseDTO.setSadCount(0L);
+        postReactResponseDTO.setWowCount(0L);
+
+        for (ReactionSummary reactionSummary : result) {
+            switch (reactionSummary.getType()) {
+                case "LIKE" -> postReactResponseDTO.setLikeCount(reactionSummary.getCount());
+                case "LOVE" -> postReactResponseDTO.setLoveCount(reactionSummary.getCount());
+                case "HAHA" -> postReactResponseDTO.setHahaCount(reactionSummary.getCount());
+                case "WOW" -> postReactResponseDTO.setWowCount(reactionSummary.getCount());
+                case "SAD" -> postReactResponseDTO.setSadCount(reactionSummary.getCount());
+                case "ANGRY" -> postReactResponseDTO.setAngryCount(reactionSummary.getCount());
+            }
+        }
 
         long count = 0L;
         for (ReactionSummary reactionSummary : result) {
