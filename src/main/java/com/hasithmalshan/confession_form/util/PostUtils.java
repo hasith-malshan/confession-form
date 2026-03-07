@@ -1,10 +1,13 @@
 package com.hasithmalshan.confession_form.util;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
+import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.model.enums.VisibilityLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.jpa.domain.Specification;
 
 @NoArgsConstructor
 public final class PostUtils {
@@ -30,5 +33,28 @@ public final class PostUtils {
         responseDTO.setUpdatedAt(postDTO.getUpdatedAt());
         responseDTO.setVisibilityLevel(postDTO.getVisibilityLevel());
         return responseDTO;
+    }
+
+    public Specification<Post> buildSpec(PostFilterRequestDTO filter) {
+
+        Specification<Post> spec = Specification.where(null);
+
+        if (filter.getUserId() != null) {
+            spec = spec.and(PostSpecification.hasUserId(filter.getUserId()));
+        }
+
+        if (filter.getVisibility() != null) {
+            spec = spec.and(PostSpecification.hasVisibility(filter.getVisibility()));
+        }
+
+        if (filter.getCreatedAfter() != null) {
+            spec = spec.and(PostSpecification.createdBefore(filter.getCreatedBefore()));
+        }
+
+        if (filter.getCreatedAfter() != null) {
+            spec = spec.and(PostSpecification.createdAfter(filter.getCreatedAfter()));
+        }
+
+        return spec;
     }
 }
