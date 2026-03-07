@@ -1,9 +1,14 @@
 package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,8 +37,9 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Post>> getAllPosts() {
-        List<Post> posts = postService.getAllPosts();
+    public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
+            @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<PostResponseDTO> posts = postService.getPostsPaginated(pageable);
         return ResponseEntity.ok(posts);
     }
 

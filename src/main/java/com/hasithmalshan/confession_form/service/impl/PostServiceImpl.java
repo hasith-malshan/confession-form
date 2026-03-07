@@ -1,15 +1,18 @@
 package com.hasithmalshan.confession_form.service.impl;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.repo.PostRepository;
 import com.hasithmalshan.confession_form.service.PostService;
+import com.hasithmalshan.confession_form.util.PostUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private PostUtils postUtils;
 
     @Override
     public PostDTO createPost(Post post) {
@@ -26,13 +30,15 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO getPostById(Long id) {
-        Post byId = postRepository.findById(id).orElseThrow(()-> new RuntimeException("Post not found with id: " + id));
+        Post byId = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         return convertToDTO(byId);
     }
 
     @Override
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public Page<PostResponseDTO> getPostsPaginated(Pageable pageable) {
+        Page<Post> latest = postRepository.findAll(pageable);
+        Page<PostDTO> converted = latest.map(this::convertToDTO);
+        return PostUtils.ensureAnonymity(converted);
     }
 
     @Override

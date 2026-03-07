@@ -12,9 +12,10 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PostDTO {
+public class PostResponseDTO {
     private Long id;
     private Long userId;
+    private String username;
     private String content;
     private String mood;
     private String category;
