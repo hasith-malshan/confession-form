@@ -1,6 +1,7 @@
 package com.hasithmalshan.confession_form.service;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,7 @@ public interface PostService {
     PostDTO createPost(Post post);
     PostDTO getPostById(Long id);
     Page<PostResponseDTO> getPostsPaginated(Pageable pageable);
+    public Page<PostResponseDTO> getPostsFilteredPaginated(Pageable pageable, PostFilterRequestDTO filterRequestDTO);
     List<Post> getPostsByUserId(Long userId);
     Post updatePost(Long id, Post post);
     void deletePost(Long id);

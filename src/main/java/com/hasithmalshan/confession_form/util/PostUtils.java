@@ -35,7 +35,7 @@ public final class PostUtils {
         return responseDTO;
     }
 
-    public Specification<Post> buildSpec(PostFilterRequestDTO filter) {
+    public static Specification<Post> buildSpec(PostFilterRequestDTO filter) {
 
         Specification<Post> spec = Specification.where(null);
 
@@ -45,6 +45,13 @@ public final class PostUtils {
 
         if (filter.getVisibility() != null) {
             spec = spec.and(PostSpecification.hasVisibility(filter.getVisibility()));
+        }
+        if (filter.getCategory() != null) {
+            spec = spec.and(PostSpecification.hasCategory(filter.getCategory()));
+        }
+
+        if (filter.getMood() != null) {
+            spec = spec.and(PostSpecification.hasMood(filter.getMood()));
         }
 
         if (filter.getCreatedAfter() != null) {

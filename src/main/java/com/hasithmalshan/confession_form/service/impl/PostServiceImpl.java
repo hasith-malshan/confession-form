@@ -1,6 +1,7 @@
 package com.hasithmalshan.confession_form.service.impl;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.repo.PostRepository;
@@ -37,6 +38,13 @@ public class PostServiceImpl implements PostService {
     @Override
     public Page<PostResponseDTO> getPostsPaginated(Pageable pageable) {
         Page<Post> latest = postRepository.findAll(pageable);
+        Page<PostDTO> converted = latest.map(this::convertToDTO);
+        return PostUtils.ensureAnonymity(converted);
+    }
+
+    @Override
+    public Page<PostResponseDTO> getPostsFilteredPaginated(Pageable pageable, PostFilterRequestDTO filterRequestDTO) {
+        Page<Post> latest = postRepository.findAll(pageable, PostUtils.buildSpec(filterRequestDTO));
         Page<PostDTO> converted = latest.map(this::convertToDTO);
         return PostUtils.ensureAnonymity(converted);
     }

@@ -1,6 +1,7 @@
 package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.PostDTO;
+import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.service.PostService;
@@ -40,6 +41,14 @@ public class PostController {
     public ResponseEntity<Page<PostResponseDTO>> getAllPosts(
             @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<PostResponseDTO> posts = postService.getPostsPaginated(pageable);
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<PostResponseDTO>> getAllPostsFiltered(
+            @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            PostFilterRequestDTO filterRequestDTO) {
+        Page<PostResponseDTO> posts = postService.getPostsFilteredPaginated(pageable,filterRequestDTO);
         return ResponseEntity.ok(posts);
     }
 
