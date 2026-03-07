@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 public class PostReactDTO {
     private Long id;
     private ReactType reactType;
-    private User user;
-    private Post post;
+    private UserDTO user;
+    private PostDTO post;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

@@ -18,4 +18,6 @@ public interface PostReactRepository extends JpaRepository<PostReact, Integer> {
                     "ORDER BY pr.reactType ASC"
     )
     List<ReactionSummary> countPostReactByPost(Long postId);
+
+    void deletePostReactByPostIdAndUserId(Long postId, Long userId);
 }
