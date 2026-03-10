@@ -14,9 +14,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificationExecutor<Post> {
     List<Post> findByUserId(Long userId);
 
-    Page<Post> findAll(Pageable pageable);
-
-    Page<Post> findAll(Pageable pageable, Specification<Post> specification);
+    Page<Post> findAll(Specification<Post> specification,Pageable pageable);
 
     List<Post> findByUserIdOrderByCreatedAtDesc(Long userId);
 }

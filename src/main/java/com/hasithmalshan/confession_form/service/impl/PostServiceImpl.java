@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Page<PostResponseDTO> getPostsFilteredPaginated(Pageable pageable, PostFilterRequestDTO filterRequestDTO) {
-        Page<Post> latest = postRepository.findAll(pageable, PostUtils.buildSpec(filterRequestDTO));
+        Page<Post> latest = postRepository.findAll(PostUtils.buildSpec(filterRequestDTO), pageable);
         Page<PostDTO> converted = latest.map(this::convertToDTO);
         return PostUtils.ensureAnonymity(converted);
     }

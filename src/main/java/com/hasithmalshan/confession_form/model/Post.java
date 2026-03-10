@@ -1,5 +1,7 @@
 package com.hasithmalshan.confession_form.model;
 
+import com.hasithmalshan.confession_form.model.enums.MoodType;
+import com.hasithmalshan.confession_form.model.enums.PostCategory;
 import com.hasithmalshan.confession_form.model.enums.VisibilityLevel;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -36,11 +38,11 @@ public class Post {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private String mood;
+    private MoodType mood;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private String category;
+    private PostCategory category;
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
