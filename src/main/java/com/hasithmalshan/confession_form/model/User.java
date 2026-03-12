@@ -38,6 +38,9 @@ public class User {
     @Column(nullable = false,unique = true)
     private String mobileNo;
 
+    @Column(nullable = false)
+    private String password;
+
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
