@@ -2,10 +2,13 @@ spring:
   application:
     name: confession-form
 
+  profiles:
+    active: local
+
   datasource:
     url: jdbc:mysql://localhost:3306/confession_form
     username: root
-    password: SQL@hmr53
+    password: ${DB_PASSWORD:}
 
     hikari:
       maximum-pool-size: 10
