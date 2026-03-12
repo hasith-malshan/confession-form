@@ -4,8 +4,8 @@ spring:
 
   datasource:
     url: jdbc:mysql://localhost:3306/confession_form
-    username: root
-    password: SQL@hmr53
+    username: USERNAME
+    password: PASSWORD
 
     hikari:
       maximum-pool-size: 10
