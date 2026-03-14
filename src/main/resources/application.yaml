@@ -23,7 +23,6 @@ spring:
     hibernate:
       ddl-auto: update
 
-# JWT (override JWT_SECRET in production)
 jwt:
-  secret: ${JWT_SECRET:YourSecretKeyShouldBeLongAndSecureAtLeast256BitsForHS256}
-  expiration: ${JWT_EXPIRATION:86400000}  # 24 hours in ms
+  secret: ${JWT_SECRET:}
+  expiration: ${JWT_EXPIRATION:}
