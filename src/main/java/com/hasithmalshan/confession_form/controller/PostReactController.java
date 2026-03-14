@@ -1,9 +1,9 @@
 package com.hasithmalshan.confession_form.controller;
 
-import com.hasithmalshan.confession_form.dto.PostReactDTO;
 import com.hasithmalshan.confession_form.dto.PostReactRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostReactResponseDTO;
 import com.hasithmalshan.confession_form.service.PostReactService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class PostReactController {
     private final PostReactService postReactService;
 
     @PostMapping
-    public ResponseEntity<Void> addReactToPost(@RequestBody PostReactRequestDTO postReactRequestDTO) {
+    public ResponseEntity<Void> addReactToPost(@Valid @RequestBody PostReactRequestDTO postReactRequestDTO) {
         try {
             postReactService.addReactToPost(postReactRequestDTO);
             return ResponseEntity.status(HttpStatus.CREATED).build();

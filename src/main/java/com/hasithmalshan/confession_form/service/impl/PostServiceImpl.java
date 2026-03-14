@@ -1,10 +1,13 @@
 package com.hasithmalshan.confession_form.service.impl;
 
+import com.hasithmalshan.confession_form.dto.PostCreateDTO;
 import com.hasithmalshan.confession_form.dto.PostDTO;
 import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.model.Post;
+import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.repo.PostRepository;
+import com.hasithmalshan.confession_form.repo.UserRepository;
 import com.hasithmalshan.confession_form.service.PostService;
 import com.hasithmalshan.confession_form.util.PostUtils;
 import lombok.RequiredArgsConstructor;
@@ -21,17 +24,28 @@ import java.util.List;
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
-    private PostUtils postUtils;
+    private final UserRepository userRepository;
 
     @Override
-    public PostDTO createPost(Post post) {
+    public PostDTO createPost(PostCreateDTO postCreateDTO, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+
+        Post post = new Post();
+        post.setUser(user);
+        post.setContent(postCreateDTO.getContent());
+        post.setMood(postCreateDTO.getMood());
+        post.setCategory(postCreateDTO.getCategory());
+        post.setVisibilityLevel(postCreateDTO.getVisibilityLevel());
+
         Post saved = postRepository.save(post);
         return convertToDTO(saved);
     }
 
     @Override
     public PostDTO getPostById(Long id) {
-        Post byId = postRepository.findById(id).orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+        Post byId = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
         return convertToDTO(byId);
     }
 
@@ -55,9 +69,16 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public Post updatePost(Long id, Post post) {
-        post.setId(id);
-        return postRepository.save(post);
+    public Post updatePost(Long id, PostCreateDTO postCreateDTO) {
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+
+        existingPost.setContent(postCreateDTO.getContent());
+        existingPost.setMood(postCreateDTO.getMood());
+        existingPost.setCategory(postCreateDTO.getCategory());
+        existingPost.setVisibilityLevel(postCreateDTO.getVisibilityLevel());
+
+        return postRepository.save(existingPost);
     }
 
     @Override
@@ -75,6 +96,9 @@ public class PostServiceImpl implements PostService {
         PostDTO postDTO = new PostDTO();
         postDTO.setId(post.getId());
         postDTO.setUserId(post.getUser().getId());
+        postDTO.setContent(post.getContent());
+        postDTO.setMood(post.getMood().name());
+        postDTO.setCategory(post.getCategory().name());
         postDTO.setCreatedAt(post.getCreatedAt());
         postDTO.setUpdatedAt(post.getUpdatedAt());
         postDTO.setVisibilityLevel(post.getVisibilityLevel());
