@@ -18,9 +18,9 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<UserDTO> registerUser(@RequestBody UserRegistrationDTO registrationDTO) {
         User registeredUser = userService.registerUser(registrationDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.convertToDTO(registeredUser));
     }
 
     @GetMapping("/{id}")

@@ -10,6 +10,7 @@ public interface UserService {
     User registerUser(UserRegistrationDTO registrationDTO);
     UserDTO getUserById(Long id);
     UserDTO getUserByUsername(String username);
+    User getUserByUsernameEntity(String username);
     UserDTO getUserByEmail(String email);
     List<User> getAllUsers();
     User updateUser(Long id, User user);

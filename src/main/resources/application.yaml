@@ -21,5 +21,8 @@ spring:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
     hibernate:
-
       ddl-auto: update
+
+jwt:
+  secret: ${JWT_SECRET:}
+  expiration: ${JWT_EXPIRATION:}

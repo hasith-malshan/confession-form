@@ -7,6 +7,7 @@ import com.hasithmalshan.confession_form.model.enums.Role;
 import com.hasithmalshan.confession_form.repo.UserRepository;
 import com.hasithmalshan.confession_form.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public User registerUser(UserRegistrationDTO registrationDTO) {
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
         user.setLname(registrationDTO.getLname());
         user.setEmail(registrationDTO.getEmail());
         user.setMobileNo(registrationDTO.getMobileNo());
-        // Note: Password should be encoded before saving
+        user.setPassword(passwordEncoder.encode(registrationDTO.getPassword()));
         user.setRole(Role.USER);
         user.setActive(true);
         return userRepository.save(user);
@@ -44,6 +46,12 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found with username: " + username));
         return convertToDTO(user);
+    }
+
+    @Override
+    public User getUserByUsernameEntity(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
     }
 
     @Override
