@@ -1,6 +1,7 @@
 package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.CommentDTO;
+import com.hasithmalshan.confession_form.dto.response.ApiResponse;
 import com.hasithmalshan.confession_form.service.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,26 +18,27 @@ public class CommentController {
     private final CommentService commentService;
 
     @GetMapping
-    public ResponseEntity<List<CommentDTO>> getAllComments() {
+    public ResponseEntity<ApiResponse<List<CommentDTO>>> getAllComments() {
         List<CommentDTO> comments = commentService.getAllComments();
-        return ResponseEntity.ok(comments);
+        return ResponseEntity.ok(ApiResponse.success(comments, "Comments retrieved successfully"));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CommentDTO> getCommentById(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<CommentDTO>> getCommentById(@PathVariable Long id) {
         CommentDTO comment = commentService.getCommentById(id);
-        return ResponseEntity.ok(comment);
+        return ResponseEntity.ok(ApiResponse.success(comment, "Comment retrieved successfully"));
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<ApiResponse<CommentDTO>> createComment(@Valid @RequestBody CommentDTO commentDTO) {
         CommentDTO createdComment = commentService.createComment(commentDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.created(createdComment, "Comment created successfully"));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse<Void>> deleteComment(@PathVariable Long id) {
         commentService.deleteComment(id);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(ApiResponse.noContent("Comment deleted successfully"));
     }
 }

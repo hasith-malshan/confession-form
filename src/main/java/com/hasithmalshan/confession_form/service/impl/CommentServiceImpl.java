@@ -1,6 +1,7 @@
 package com.hasithmalshan.confession_form.service.impl;
 
 import com.hasithmalshan.confession_form.dto.CommentDTO;
+import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.Comment;
 import com.hasithmalshan.confession_form.repo.CommentRepository;
 import com.hasithmalshan.confession_form.service.CommentService;
@@ -22,14 +23,14 @@ public class CommentServiceImpl implements CommentService {
     public CommentDTO createComment(CommentDTO commentDTO) {
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());
-        // Set other fields from DTO to entity
         Comment savedComment = commentRepository.save(comment);
         return convertToDTO(savedComment);
     }
 
     @Override
     public CommentDTO getCommentById(Long id) {
-        Comment foundComment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        Comment foundComment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
         return convertToDTO(foundComment);
     }
 
@@ -50,9 +51,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public CommentDTO updateComment(Long id, CommentDTO commentDTO) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new RuntimeException("Comment not found"));
+        Comment comment = commentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Comment", "id", id));
         comment.setContent(commentDTO.getContent());
-        // Update other fields
         Comment updatedComment = commentRepository.save(comment);
         return convertToDTO(updatedComment);
     }

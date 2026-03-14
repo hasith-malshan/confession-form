@@ -4,6 +4,7 @@ import com.hasithmalshan.confession_form.dto.PostCreateDTO;
 import com.hasithmalshan.confession_form.dto.PostDTO;
 import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
+import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.repo.PostRepository;
@@ -29,7 +30,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO createPost(PostCreateDTO postCreateDTO, Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
 
         Post post = new Post();
         post.setUser(user);
@@ -45,7 +46,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO getPostById(Long id) {
         Post byId = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
         return convertToDTO(byId);
     }
 
@@ -71,7 +72,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public Post updatePost(Long id, PostCreateDTO postCreateDTO) {
         Post existingPost = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found with id: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
 
         existingPost.setContent(postCreateDTO.getContent());
         existingPost.setMood(postCreateDTO.getMood());
