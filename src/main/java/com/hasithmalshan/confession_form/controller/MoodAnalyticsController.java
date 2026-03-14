@@ -8,6 +8,7 @@ import com.hasithmalshan.confession_form.service.MoodAnalyticsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -20,12 +21,14 @@ public class MoodAnalyticsController {
     private final MoodAnalyticsService moodAnalyticsService;
 
     @GetMapping("/community")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CommunityMoodAnalyticsDTO>> getCommunityMoodAnalytics() {
         CommunityMoodAnalyticsDTO analytics = moodAnalyticsService.getCommunityMoodAnalytics();
         return ResponseEntity.ok(ApiResponse.success(analytics, "Community mood analytics retrieved successfully"));
     }
 
     @GetMapping(value = "/community", params = "since")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CommunityMoodAnalyticsDTO>> getCommunityMoodAnalyticsSince(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since) {
         CommunityMoodAnalyticsDTO analytics = moodAnalyticsService.getCommunityMoodAnalyticsSince(since);
@@ -33,6 +36,7 @@ public class MoodAnalyticsController {
     }
 
     @GetMapping("/user/{userId}")
+    @PreAuthorize("@authz.isCurrentUser(#userId) or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<UserMoodHistoryDTO>> getUserMoodHistory(@PathVariable Long userId) {
         UserMoodHistoryDTO history = moodAnalyticsService.getUserMoodHistory(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("Mood history", "userId", userId));

@@ -15,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -63,12 +64,14 @@ public class PostController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("@authz.isPostOwner(#id) or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<PostDTO>> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDTO postCreateDTO) {
         PostDTO updatedPost = postService.updatePost(id, postCreateDTO);
         return ResponseEntity.ok(ApiResponse.success(updatedPost, "Post updated successfully"));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@authz.isPostOwner(#id) or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
         return ResponseEntity.ok(ApiResponse.noContent("Post deleted successfully"));

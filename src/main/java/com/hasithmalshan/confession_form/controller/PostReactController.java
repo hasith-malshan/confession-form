@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -24,6 +25,7 @@ public class PostReactController {
     }
 
     @DeleteMapping
+    @PreAuthorize("@authz.isReactOwner(#postId, #userId) or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> removeReactFromPost(@RequestParam Long postId, @RequestParam Long userId) {
         postReactService.removeReactFromPost(postId, userId);
         return ResponseEntity.ok(ApiResponse.noContent("Reaction removed successfully"));
