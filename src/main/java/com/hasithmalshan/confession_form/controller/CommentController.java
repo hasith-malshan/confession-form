@@ -2,7 +2,9 @@ package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.CommentDTO;
 import com.hasithmalshan.confession_form.service.CommentService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,9 +29,9 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDTO> createComment(@RequestBody CommentDTO commentDTO) {
+    public ResponseEntity<CommentDTO> createComment(@Valid @RequestBody CommentDTO commentDTO) {
         CommentDTO createdComment = commentService.createComment(commentDTO);
-        return ResponseEntity.ok(createdComment);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdComment);
     }
 
     @DeleteMapping("/{id}")

@@ -4,6 +4,7 @@ import com.hasithmalshan.confession_form.dto.UserDTO;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> registerUser(@RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<UserDTO> registerUser(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
         User registeredUser = userService.registerUser(registrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.convertToDTO(registeredUser));
     }

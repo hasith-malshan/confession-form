@@ -6,6 +6,7 @@ import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.security.JwtUtil;
 import com.hasithmalshan.confession_form.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -49,7 +50,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
         User user = userService.registerUser(registrationDTO);
 
         List<String> roles = List.of("ROLE_" + user.getRole().name());
