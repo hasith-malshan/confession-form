@@ -65,12 +65,14 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<Post> getPostsByUserId(Long userId) {
-        return postRepository.findByUserIdOrderByCreatedAtDesc(userId);
+    public List<PostDTO> getPostsByUserId(Long userId) {
+        return postRepository.findByUserIdOrderByCreatedAtDesc(userId).stream()
+                .map(this::convertToDTO)
+                .toList();
     }
 
     @Override
-    public Post updatePost(Long id, PostCreateDTO postCreateDTO) {
+    public PostDTO updatePost(Long id, PostCreateDTO postCreateDTO) {
         Post existingPost = postRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Post", "id", id));
 
@@ -79,7 +81,8 @@ public class PostServiceImpl implements PostService {
         existingPost.setCategory(postCreateDTO.getCategory());
         existingPost.setVisibilityLevel(postCreateDTO.getVisibilityLevel());
 
-        return postRepository.save(existingPost);
+        Post updatedPost = postRepository.save(existingPost);
+        return convertToDTO(updatedPost);
     }
 
     @Override

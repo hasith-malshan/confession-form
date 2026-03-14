@@ -2,6 +2,7 @@ package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.UserDTO;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
+import com.hasithmalshan.confession_form.dto.UserUpdateDTO;
 import com.hasithmalshan.confession_form.dto.response.ApiResponse;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.service.UserService;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,18 +47,21 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<List<UserDTO>>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
+    @PreAuthorize("@authz.isCurrentUser(#id) or hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<UserDTO>> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO updateDTO) {
+        UserDTO updatedUser = userService.updateUser(id, updateDTO);
         return ResponseEntity.ok(ApiResponse.success(updatedUser, "User updated successfully"));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok(ApiResponse.noContent("User deleted successfully"));

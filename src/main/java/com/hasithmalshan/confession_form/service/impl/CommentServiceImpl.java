@@ -3,7 +3,11 @@ package com.hasithmalshan.confession_form.service.impl;
 import com.hasithmalshan.confession_form.dto.CommentDTO;
 import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.Comment;
+import com.hasithmalshan.confession_form.model.Post;
+import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.repo.CommentRepository;
+import com.hasithmalshan.confession_form.repo.PostRepository;
+import com.hasithmalshan.confession_form.repo.UserRepository;
 import com.hasithmalshan.confession_form.service.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +22,21 @@ import java.util.stream.Collectors;
 public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
+    private final UserRepository userRepository;
+    private final PostRepository postRepository;
 
     @Override
     public CommentDTO createComment(CommentDTO commentDTO) {
+        User user = userRepository.findById(commentDTO.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", commentDTO.getUserId()));
+        Post post = postRepository.findById(commentDTO.getPostId())
+                .orElseThrow(() -> new ResourceNotFoundException("Post", "id", commentDTO.getPostId()));
+
         Comment comment = new Comment();
         comment.setContent(commentDTO.getContent());
+        comment.setUser(user);
+        comment.setPost(post);
+        
         Comment savedComment = commentRepository.save(comment);
         return convertToDTO(savedComment);
     }
@@ -72,7 +86,10 @@ public class CommentServiceImpl implements CommentService {
         CommentDTO commentDTO = new CommentDTO();
         commentDTO.setId(comment.getId());
         commentDTO.setContent(comment.getContent());
-        // Map other fields
+        commentDTO.setUserId(comment.getUser().getId());
+        commentDTO.setPostId(comment.getPost().getId());
+        commentDTO.setCreatedAt(comment.getCreatedAt());
+        commentDTO.setUpdatedAt(comment.getUpdatedAt());
         return commentDTO;
     }
 }

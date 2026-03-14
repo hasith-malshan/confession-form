@@ -5,7 +5,6 @@ import com.hasithmalshan.confession_form.dto.PostDTO;
 import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.dto.response.ApiResponse;
-import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.security.JwtAuthDetails;
 import com.hasithmalshan.confession_form.service.PostService;
 import jakarta.validation.Valid;
@@ -16,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -58,18 +58,20 @@ public class PostController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<Post>>> getPostsByUserId(@PathVariable Long userId) {
-        List<Post> posts = postService.getPostsByUserId(userId);
+    public ResponseEntity<ApiResponse<List<PostDTO>>> getPostsByUserId(@PathVariable Long userId) {
+        List<PostDTO> posts = postService.getPostsByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success(posts, "User posts retrieved successfully"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Post>> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDTO postCreateDTO) {
-        Post updatedPost = postService.updatePost(id, postCreateDTO);
+    @PreAuthorize("@authz.isPostOwner(#id) or hasRole('ADMIN')")
+    public ResponseEntity<ApiResponse<PostDTO>> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDTO postCreateDTO) {
+        PostDTO updatedPost = postService.updatePost(id, postCreateDTO);
         return ResponseEntity.ok(ApiResponse.success(updatedPost, "Post updated successfully"));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("@authz.isPostOwner(#id) or hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<Void>> deletePost(@PathVariable Long id) {
         postService.deletePost(id);
         return ResponseEntity.ok(ApiResponse.noContent("Post deleted successfully"));

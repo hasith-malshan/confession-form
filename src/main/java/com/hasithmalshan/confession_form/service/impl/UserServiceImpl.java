@@ -2,6 +2,7 @@ package com.hasithmalshan.confession_form.service.impl;
 
 import com.hasithmalshan.confession_form.dto.UserDTO;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
+import com.hasithmalshan.confession_form.dto.UserUpdateDTO;
 import com.hasithmalshan.confession_form.exception.DuplicateResourceException;
 import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.User;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,14 +74,38 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserDTO> getAllUsers() {
+        return userRepository.findAll().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public User updateUser(Long id, User user) {
-        user.setId(id);
-        return userRepository.save(user);
+    public UserDTO updateUser(Long id, UserUpdateDTO updateDTO) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+        if (updateDTO.getFname() != null) {
+            existingUser.setFname(updateDTO.getFname());
+        }
+        if (updateDTO.getLname() != null) {
+            existingUser.setLname(updateDTO.getLname());
+        }
+        if (updateDTO.getEmail() != null && !updateDTO.getEmail().equals(existingUser.getEmail())) {
+            if (userRepository.findByEmail(updateDTO.getEmail()).isPresent()) {
+                throw new DuplicateResourceException("User", "email", updateDTO.getEmail());
+            }
+            existingUser.setEmail(updateDTO.getEmail());
+        }
+        if (updateDTO.getMobileNo() != null && !updateDTO.getMobileNo().equals(existingUser.getMobileNo())) {
+            existingUser.setMobileNo(updateDTO.getMobileNo());
+        }
+        if (updateDTO.getPassword() != null) {
+            existingUser.setPassword(passwordEncoder.encode(updateDTO.getPassword()));
+        }
+
+        User updatedUser = userRepository.save(existingUser);
+        return convertToDTO(updatedUser);
     }
 
     @Override
@@ -96,12 +121,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO convertToDTO(User user) {
         UserDTO userDTO = new UserDTO();
+        userDTO.setId(user.getId());
         userDTO.setUsername(user.getUsername());
         userDTO.setFname(user.getFname());
         userDTO.setLname(user.getLname());
         userDTO.setEmail(user.getEmail());
         userDTO.setMobileNo(user.getMobileNo());
         userDTO.setRole(user.getRole().toString());
+        userDTO.setActive(user.isActive());
         return userDTO;
     }
 }

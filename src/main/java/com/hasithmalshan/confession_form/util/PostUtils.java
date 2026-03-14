@@ -54,7 +54,7 @@ public final class PostUtils {
             spec = spec.and(PostSpecification.hasMood(filter.getMood()));
         }
 
-        if (filter.getCreatedAfter() != null) {
+        if (filter.getCreatedBefore() != null) {
             spec = spec.and(PostSpecification.createdBefore(filter.getCreatedBefore()));
         }
 
