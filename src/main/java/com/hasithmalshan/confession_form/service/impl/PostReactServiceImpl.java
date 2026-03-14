@@ -48,7 +48,7 @@ public class PostReactServiceImpl implements PostReactService {
         if (result.isEmpty()) return null;
 
         PostReactResponseDTO postReactResponseDTO = new PostReactResponseDTO();
-        postReactResponseDTO.setPostId(0L);
+        postReactResponseDTO.setPostId(postId);
         postReactResponseDTO.setAngryCount(0L);
         postReactResponseDTO.setHahaCount(0L);
         postReactResponseDTO.setLikeCount(0L);
