@@ -2,6 +2,7 @@ package com.hasithmalshan.confession_form.controller;
 
 import com.hasithmalshan.confession_form.dto.UserDTO;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
+import com.hasithmalshan.confession_form.dto.UserUpdateDTO;
 import com.hasithmalshan.confession_form.dto.response.ApiResponse;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.service.UserService;
@@ -45,14 +46,14 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<ApiResponse<List<UserDTO>>> getAllUsers() {
+        List<UserDTO> users = userService.getAllUsers();
         return ResponseEntity.ok(ApiResponse.success(users, "Users retrieved successfully"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<User>> updateUser(@PathVariable Long id, @RequestBody User user) {
-        User updatedUser = userService.updateUser(id, user);
+    public ResponseEntity<ApiResponse<UserDTO>> updateUser(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO updateDTO) {
+        UserDTO updatedUser = userService.updateUser(id, updateDTO);
         return ResponseEntity.ok(ApiResponse.success(updatedUser, "User updated successfully"));
     }
 

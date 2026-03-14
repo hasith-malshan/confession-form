@@ -15,8 +15,8 @@ public interface PostService {
     PostDTO getPostById(Long id);
     Page<PostResponseDTO> getPostsPaginated(Pageable pageable);
     Page<PostResponseDTO> getPostsFilteredPaginated(Pageable pageable, PostFilterRequestDTO filterRequestDTO);
-    List<Post> getPostsByUserId(Long userId);
-    Post updatePost(Long id, PostCreateDTO postCreateDTO);
+    List<PostDTO> getPostsByUserId(Long userId);
+    PostDTO updatePost(Long id, PostCreateDTO postCreateDTO);
     void deletePost(Long id);
     boolean postExists(Long id);
     PostDTO convertToDTO(Post post);

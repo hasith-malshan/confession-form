@@ -5,7 +5,6 @@ import com.hasithmalshan.confession_form.dto.PostDTO;
 import com.hasithmalshan.confession_form.dto.PostFilterRequestDTO;
 import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.dto.response.ApiResponse;
-import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.security.JwtAuthDetails;
 import com.hasithmalshan.confession_form.service.PostService;
 import jakarta.validation.Valid;
@@ -58,14 +57,14 @@ public class PostController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse<List<Post>>> getPostsByUserId(@PathVariable Long userId) {
-        List<Post> posts = postService.getPostsByUserId(userId);
+    public ResponseEntity<ApiResponse<List<PostDTO>>> getPostsByUserId(@PathVariable Long userId) {
+        List<PostDTO> posts = postService.getPostsByUserId(userId);
         return ResponseEntity.ok(ApiResponse.success(posts, "User posts retrieved successfully"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<Post>> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDTO postCreateDTO) {
-        Post updatedPost = postService.updatePost(id, postCreateDTO);
+    public ResponseEntity<ApiResponse<PostDTO>> updatePost(@PathVariable Long id, @Valid @RequestBody PostCreateDTO postCreateDTO) {
+        PostDTO updatedPost = postService.updatePost(id, postCreateDTO);
         return ResponseEntity.ok(ApiResponse.success(updatedPost, "Post updated successfully"));
     }
 
