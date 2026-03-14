@@ -3,6 +3,7 @@ package com.hasithmalshan.confession_form.controller;
 import com.hasithmalshan.confession_form.dto.AuthResponse;
 import com.hasithmalshan.confession_form.dto.LoginRequest;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
+import com.hasithmalshan.confession_form.dto.response.ApiResponse;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.security.JwtUtil;
 import com.hasithmalshan.confession_form.service.UserService;
@@ -28,7 +29,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<AuthResponse>> login(@Valid @RequestBody LoginRequest request) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
         );
@@ -40,28 +41,33 @@ public class AuthController {
 
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), roles);
 
-        return ResponseEntity.ok(new AuthResponse(
+        AuthResponse authResponse = new AuthResponse(
                 token,
                 "Bearer",
                 user.getId(),
                 user.getUsername(),
                 roles
-        ));
+        );
+
+        return ResponseEntity.ok(ApiResponse.success(authResponse, "Login successful"));
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
+    public ResponseEntity<ApiResponse<AuthResponse>> register(@Valid @RequestBody UserRegistrationDTO registrationDTO) {
         User user = userService.registerUser(registrationDTO);
 
         List<String> roles = List.of("ROLE_" + user.getRole().name());
         String token = jwtUtil.generateToken(user.getId(), user.getUsername(), roles);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse(
+        AuthResponse authResponse = new AuthResponse(
                 token,
                 "Bearer",
                 user.getId(),
                 user.getUsername(),
                 roles
-        ));
+        );
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.created(authResponse, "Registration successful"));
     }
 }

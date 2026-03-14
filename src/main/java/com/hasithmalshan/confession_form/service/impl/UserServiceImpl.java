@@ -2,6 +2,8 @@ package com.hasithmalshan.confession_form.service.impl;
 
 import com.hasithmalshan.confession_form.dto.UserDTO;
 import com.hasithmalshan.confession_form.dto.UserRegistrationDTO;
+import com.hasithmalshan.confession_form.exception.DuplicateResourceException;
+import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.User;
 import com.hasithmalshan.confession_form.model.enums.Role;
 import com.hasithmalshan.confession_form.repo.UserRepository;
@@ -24,6 +26,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(UserRegistrationDTO registrationDTO) {
+        if (userRepository.findByUsername(registrationDTO.getUsername()).isPresent()) {
+            throw new DuplicateResourceException("User", "username", registrationDTO.getUsername());
+        }
+        if (userRepository.findByEmail(registrationDTO.getEmail()).isPresent()) {
+            throw new DuplicateResourceException("User", "email", registrationDTO.getEmail());
+        }
+
         User user = new User();
         user.setUsername(registrationDTO.getUsername());
         user.setFname(registrationDTO.getFname());
@@ -38,25 +47,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
         return convertToDTO(user);
     }
 
     @Override
     public UserDTO getUserByUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
         return convertToDTO(user);
     }
 
     @Override
     public User getUserByUsernameEntity(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
     }
 
     @Override
     public UserDTO getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found with email: " + email));
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
         return convertToDTO(user);
     }
 
