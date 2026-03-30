@@ -13,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -34,6 +36,17 @@ public class PostController {
         PostDTO createdPost = postService.createPost(postCreateDTO, userId);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.created(createdPost, "Post created successfully"));
+    }
+
+    @GetMapping("/trending")
+    public ResponseEntity<ApiResponse<List<PostResponseDTO>>> getTrendingPosts(
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since) {
+        if (since == null) {
+            since = LocalDateTime.now().minusDays(7);
+        }
+        List<PostResponseDTO> trending = postService.getTrendingPosts(size, since);
+        return ResponseEntity.ok(ApiResponse.success(trending, "Trending posts retrieved successfully"));
     }
 
     @GetMapping("/{id}")

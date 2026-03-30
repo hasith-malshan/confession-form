@@ -8,6 +8,7 @@ import com.hasithmalshan.confession_form.model.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface PostService {
@@ -19,6 +20,7 @@ public interface PostService {
     PostDTO updatePost(Long id, PostCreateDTO postCreateDTO);
     void deletePost(Long id);
     boolean postExists(Long id);
+    List<PostResponseDTO> getTrendingPosts(int size, LocalDateTime since);
     PostDTO convertToDTO(Post post);
 }
 

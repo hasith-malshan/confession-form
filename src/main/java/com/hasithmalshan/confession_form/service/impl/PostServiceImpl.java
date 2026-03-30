@@ -7,16 +7,19 @@ import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.model.User;
+import com.hasithmalshan.confession_form.model.enums.VisibilityLevel;
 import com.hasithmalshan.confession_form.repo.PostRepository;
 import com.hasithmalshan.confession_form.repo.UserRepository;
 import com.hasithmalshan.confession_form.service.PostService;
 import com.hasithmalshan.confession_form.util.PostUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -93,6 +96,23 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean postExists(Long id) {
         return postRepository.existsById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostResponseDTO> getTrendingPosts(int size, LocalDateTime since) {
+        Pageable pageable = PageRequest.of(0, size);
+        List<Post> trendingPosts = postRepository.findTrendingPosts(since, pageable);
+
+        return trendingPosts.stream()
+                .map(this::convertToDTO)
+                .map(PostUtils::toPostResponseDTO)
+                .peek(post -> {
+                    if (post.getVisibilityLevel() == VisibilityLevel.ANONYMOUS) {
+                        post.setUsername("Anonymous User");
+                    }
+                })
+                .toList();
     }
 
     @Override
