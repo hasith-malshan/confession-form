@@ -32,6 +32,8 @@ public final class PostUtils {
         responseDTO.setCreatedAt(postDTO.getCreatedAt());
         responseDTO.setUpdatedAt(postDTO.getUpdatedAt());
         responseDTO.setVisibilityLevel(postDTO.getVisibilityLevel());
+        responseDTO.setReactionCount(postDTO.getReactionCount());
+        responseDTO.setCommentCount(postDTO.getCommentCount());
         return responseDTO;
     }
 

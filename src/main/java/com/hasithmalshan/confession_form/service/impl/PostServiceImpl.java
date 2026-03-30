@@ -106,6 +106,8 @@ public class PostServiceImpl implements PostService {
         postDTO.setCreatedAt(post.getCreatedAt());
         postDTO.setUpdatedAt(post.getUpdatedAt());
         postDTO.setVisibilityLevel(post.getVisibilityLevel());
+        postDTO.setReactionCount(post.getReact() != null ? (long) post.getReact().size() : 0L);
+        postDTO.setCommentCount(post.getComment() != null ? (long) post.getComment().size() : 0L);
         return postDTO;
     }
 }
