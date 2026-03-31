@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,5 +20,6 @@ public class UserDTO {
     private String role;
     private String mobileNo;
     private boolean isActive;
+    private LocalDateTime createdAt;
 }
 
