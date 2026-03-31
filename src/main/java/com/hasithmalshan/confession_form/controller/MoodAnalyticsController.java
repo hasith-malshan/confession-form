@@ -21,14 +21,12 @@ public class MoodAnalyticsController {
     private final MoodAnalyticsService moodAnalyticsService;
 
     @GetMapping("/community")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CommunityMoodAnalyticsDTO>> getCommunityMoodAnalytics() {
         CommunityMoodAnalyticsDTO analytics = moodAnalyticsService.getCommunityMoodAnalytics();
         return ResponseEntity.ok(ApiResponse.success(analytics, "Community mood analytics retrieved successfully"));
     }
 
     @GetMapping(value = "/community", params = "since")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<CommunityMoodAnalyticsDTO>> getCommunityMoodAnalyticsSince(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime since) {
         CommunityMoodAnalyticsDTO analytics = moodAnalyticsService.getCommunityMoodAnalyticsSince(since);
