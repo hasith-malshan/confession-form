@@ -49,6 +49,14 @@ public class PostController {
         return ResponseEntity.ok(ApiResponse.success(posts, "Posts retrieved successfully"));
     }
 
+    @GetMapping("/trending")
+    public ResponseEntity<ApiResponse<List<PostResponseDTO>>> getTrendingPosts(
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(defaultValue = "7") int sinceDays) {
+        List<PostResponseDTO> trending = postService.getTrendingPosts(size, sinceDays);
+        return ResponseEntity.ok(ApiResponse.success(trending, "Trending posts retrieved successfully"));
+    }
+
     @GetMapping("/filter")
     public ResponseEntity<ApiResponse<Page<PostResponseDTO>>> getAllPostsFiltered(
             @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,

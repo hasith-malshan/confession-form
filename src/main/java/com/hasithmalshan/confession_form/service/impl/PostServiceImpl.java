@@ -7,6 +7,7 @@ import com.hasithmalshan.confession_form.dto.PostResponseDTO;
 import com.hasithmalshan.confession_form.exception.ResourceNotFoundException;
 import com.hasithmalshan.confession_form.model.Post;
 import com.hasithmalshan.confession_form.model.User;
+import com.hasithmalshan.confession_form.model.enums.VisibilityLevel;
 import com.hasithmalshan.confession_form.repo.PostRepository;
 import com.hasithmalshan.confession_form.repo.UserRepository;
 import com.hasithmalshan.confession_form.service.PostService;
@@ -17,6 +18,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -93,6 +96,32 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean postExists(Long id) {
         return postRepository.existsById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PostResponseDTO> getTrendingPosts(int size, int sinceDays) {
+        LocalDateTime since = LocalDateTime.now().minusDays(sinceDays);
+        List<Post> recentPosts = postRepository.findByCreatedAtAfter(since);
+
+        return recentPosts.stream()
+                .map(post -> {
+                    PostDTO dto = convertToDTO(post);
+                    PostResponseDTO resp = PostUtils.toPostResponseDTO(dto);
+                    if (post.getVisibilityLevel() == VisibilityLevel.ANONYMOUS) {
+                        resp.setUsername("Anonymous User");
+                    } else {
+                        resp.setUsername(post.getUser().getUsername());
+                    }
+                    return resp;
+                })
+                .sorted(Comparator.comparingLong((PostResponseDTO p) -> {
+                    long reactions = p.getReactionCount() != null ? p.getReactionCount() : 0;
+                    long comments = p.getCommentCount() != null ? p.getCommentCount() : 0;
+                    return reactions + (comments * 2);
+                }).reversed())
+                .limit(size)
+                .toList();
     }
 
     @Override
