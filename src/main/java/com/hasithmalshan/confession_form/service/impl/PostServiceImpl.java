@@ -14,6 +14,7 @@ import com.hasithmalshan.confession_form.service.PostService;
 import com.hasithmalshan.confession_form.util.PostUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -100,6 +101,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
+
     public List<PostResponseDTO> getTrendingPosts(int size, int sinceDays) {
         LocalDateTime since = LocalDateTime.now().minusDays(sinceDays);
         List<Post> recentPosts = postRepository.findByCreatedAtAfter(since);
@@ -121,6 +123,18 @@ public class PostServiceImpl implements PostService {
                     return reactions + (comments * 2);
                 }).reversed())
                 .limit(size)
+    public List<PostResponseDTO> getTrendingPosts(int size, LocalDateTime since) {
+        Pageable pageable = PageRequest.of(0, size);
+        List<Post> trendingPosts = postRepository.findTrendingPosts(since, pageable);
+
+        return trendingPosts.stream()
+                .map(this::convertToDTO)
+                .map(PostUtils::toPostResponseDTO)
+                .peek(post -> {
+                    if (post.getVisibilityLevel() == VisibilityLevel.ANONYMOUS) {
+                        post.setUsername("Anonymous User");
+                    }
+                })
                 .toList();
     }
 
