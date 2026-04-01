@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -100,6 +101,28 @@ public class PostServiceImpl implements PostService {
 
     @Override
     @Transactional(readOnly = true)
+
+    public List<PostResponseDTO> getTrendingPosts(int size, int sinceDays) {
+        LocalDateTime since = LocalDateTime.now().minusDays(sinceDays);
+        List<Post> recentPosts = postRepository.findByCreatedAtAfter(since);
+
+        return recentPosts.stream()
+                .map(post -> {
+                    PostDTO dto = convertToDTO(post);
+                    PostResponseDTO resp = PostUtils.toPostResponseDTO(dto);
+                    if (post.getVisibilityLevel() == VisibilityLevel.ANONYMOUS) {
+                        resp.setUsername("Anonymous User");
+                    } else {
+                        resp.setUsername(post.getUser().getUsername());
+                    }
+                    return resp;
+                })
+                .sorted(Comparator.comparingLong((PostResponseDTO p) -> {
+                    long reactions = p.getReactionCount() != null ? p.getReactionCount() : 0;
+                    long comments = p.getCommentCount() != null ? p.getCommentCount() : 0;
+                    return reactions + (comments * 2);
+                }).reversed())
+                .limit(size)
     public List<PostResponseDTO> getTrendingPosts(int size, LocalDateTime since) {
         Pageable pageable = PageRequest.of(0, size);
         List<Post> trendingPosts = postRepository.findTrendingPosts(since, pageable);
@@ -126,6 +149,8 @@ public class PostServiceImpl implements PostService {
         postDTO.setCreatedAt(post.getCreatedAt());
         postDTO.setUpdatedAt(post.getUpdatedAt());
         postDTO.setVisibilityLevel(post.getVisibilityLevel());
+        postDTO.setReactionCount(post.getReact() != null ? (long) post.getReact().size() : 0L);
+        postDTO.setCommentCount(post.getComment() != null ? (long) post.getComment().size() : 0L);
         return postDTO;
     }
 }

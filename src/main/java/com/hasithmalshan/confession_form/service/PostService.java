@@ -20,6 +20,7 @@ public interface PostService {
     PostDTO updatePost(Long id, PostCreateDTO postCreateDTO);
     void deletePost(Long id);
     boolean postExists(Long id);
+    List<PostResponseDTO> getTrendingPosts(int size, int sinceDays);
     List<PostResponseDTO> getTrendingPosts(int size, LocalDateTime since);
     PostDTO convertToDTO(Post post);
 }

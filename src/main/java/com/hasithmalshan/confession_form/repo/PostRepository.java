@@ -21,6 +21,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, JpaSpecificat
 
     List<Post> findByUserIdOrderByCreatedAtDesc(Long userId);
 
+    List<Post> findByCreatedAtAfter(LocalDateTime date);
+
     @Query("SELECT p.mood, COUNT(p) FROM Post p GROUP BY p.mood")
     List<Object[]> countPostsByMood();
 

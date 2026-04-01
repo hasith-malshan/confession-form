@@ -129,6 +129,7 @@ public class UserServiceImpl implements UserService {
         userDTO.setMobileNo(user.getMobileNo());
         userDTO.setRole(user.getRole().toString());
         userDTO.setActive(user.isActive());
+        userDTO.setCreatedAt(user.getCreatedAt());
         return userDTO;
     }
 }
