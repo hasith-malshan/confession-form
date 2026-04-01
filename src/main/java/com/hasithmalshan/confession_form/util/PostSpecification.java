@@ -18,7 +18,7 @@ public class PostSpecification {
 
     public static Specification<Post> hasVisibility(String visibility) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("visibility")), "%" + visibility.toUpperCase() + "%");
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("visibilityLevel")), "%" + visibility.toUpperCase() + "%");
     }
 
     public static Specification<Post> hasUserId(Long userId) {
