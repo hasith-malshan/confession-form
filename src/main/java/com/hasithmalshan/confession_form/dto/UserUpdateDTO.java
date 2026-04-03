@@ -28,4 +28,9 @@ public class UserUpdateDTO {
     
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
+
+    @Pattern(regexp = "^(USER|ADMIN)$", message = "Role must be USER or ADMIN")
+    private String role;
+
+    private Boolean active;
 }
