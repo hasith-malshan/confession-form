@@ -22,5 +22,7 @@ public class PostResponseDTO {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private VisibilityLevel visibilityLevel;
+    private long reactionCount;
+    private long commentCount;
 }
 
