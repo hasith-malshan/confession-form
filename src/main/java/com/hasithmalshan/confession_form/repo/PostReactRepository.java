@@ -11,7 +11,7 @@ import java.util.List;
 @Repository
 public interface PostReactRepository extends JpaRepository<PostReact, Integer> {
     @Query(
-            "SELECT pr.reactType, COUNT(pr) " +
+            "SELECT pr.reactType AS type, COUNT(pr) AS count " +
                     "FROM PostReact pr " +
                     "WHERE pr.post.id = :postId " +
                     "GROUP BY pr.reactType " +
