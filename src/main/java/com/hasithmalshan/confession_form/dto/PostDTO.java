@@ -15,11 +15,14 @@ import java.time.LocalDateTime;
 public class PostDTO {
     private Long id;
     private Long userId;
+    private String username;
     private String content;
     private String mood;
     private String category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private VisibilityLevel visibilityLevel;
+    private long reactionCount;
+    private long commentCount;
 }
 

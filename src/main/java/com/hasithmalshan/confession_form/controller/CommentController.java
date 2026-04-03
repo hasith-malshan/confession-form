@@ -30,6 +30,12 @@ public class CommentController {
         return ResponseEntity.ok(ApiResponse.success(comment, "Comment retrieved successfully"));
     }
 
+    @GetMapping("/post/{postId}")
+    public ResponseEntity<ApiResponse<List<CommentDTO>>> getCommentsByPostId(@PathVariable Long postId) {
+        List<CommentDTO> comments = commentService.getCommentsByPostId(postId);
+        return ResponseEntity.ok(ApiResponse.success(comments, "Comments retrieved successfully"));
+    }
+
     @PostMapping
     public ResponseEntity<ApiResponse<CommentDTO>> createComment(@Valid @RequestBody CommentDTO commentDTO) {
         CommentDTO createdComment = commentService.createComment(commentDTO);

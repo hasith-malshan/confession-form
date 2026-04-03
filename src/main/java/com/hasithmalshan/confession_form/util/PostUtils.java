@@ -26,12 +26,15 @@ public final class PostUtils {
         PostResponseDTO responseDTO = new PostResponseDTO();
         responseDTO.setId(postDTO.getId());
         responseDTO.setUserId(postDTO.getUserId());
+        responseDTO.setUsername(postDTO.getUsername());
         responseDTO.setContent(postDTO.getContent());
         responseDTO.setMood(postDTO.getMood());
         responseDTO.setCategory(postDTO.getCategory());
         responseDTO.setCreatedAt(postDTO.getCreatedAt());
         responseDTO.setUpdatedAt(postDTO.getUpdatedAt());
         responseDTO.setVisibilityLevel(postDTO.getVisibilityLevel());
+        responseDTO.setReactionCount(postDTO.getReactionCount());
+        responseDTO.setCommentCount(postDTO.getCommentCount());
         return responseDTO;
     }
 
