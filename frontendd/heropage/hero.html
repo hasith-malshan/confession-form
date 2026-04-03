@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnonConfess – Share what you feel. Stay anonymous.</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- ───────────────── NAV ───────────────── -->
+  <nav class="nav" id="nav">
+    <div class="nav__brand">
+      <span class="nav__logo-icon">◈</span>
+      <span class="nav__logo-text">AnonConfess</span>
+    </div>
+    <ul class="nav__links">
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">Insights</a></li>
+    </ul>
+    <div class="nav__actions">
+      <a href="../loginpage/login.html" class="btn-ghost">Log In</a>
+      <a href="../loginpage/signup.html" class="btn-primary">Get Started</a>
+    </div>
+    <button class="nav__hamburger" id="hamburger" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ───────────────── HERO ───────────────── -->
+  <section class="hero" id="hero">
+    <div class="hero__bg-blob hero__bg-blob--1"></div>
+    <div class="hero__bg-blob hero__bg-blob--2"></div>
+    <div class="hero__bg-blob hero__bg-blob--3"></div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow reveal">◈ Safe &amp; Anonymous Community</p>
+      <h1 class="hero__headline reveal reveal--delay-1">
+        Share what you feel.<br />
+        <em class="hero__headline--accent">Stay anonymous.</em>
+      </h1>
+      <p class="hero__sub reveal reveal--delay-2">
+        A safe space to unburden your mind. Join a supportive community where you
+        can express your true self without fear of judgment.
+      </p>
+      <div class="hero__ctas reveal reveal--delay-3">
+        <a href="frontend/loginpage/signup.html" class="btn-primary btn-primary--large">Share a Confession</a>
+        <a href="#" class="btn-outline">Explore Community</a>
+      </div>
+      <p class="hero__social-proof reveal reveal--delay-4">
+        <span class="avatars">
+          <span class="avatar"></span>
+          <span class="avatar"></span>
+          <span class="avatar"></span>
+        </span>
+        Joined by <strong id="userCount">12,019+</strong>people.
+      </p>
+    </div>
+
+    <!-- Live feed cards -->
+    <div class="hero__feed reveal reveal--delay-2">
+      <div class="feed-card feed-card--top" data-float="0">
+        <div class="feed-card__header">
+          <span class="tag tag--love">Love</span>
+          <span class="feed-card__time">Just now</span>
+        </div>
+        <p>"I finally told her how I feel today. My heart's racing but I had to live."</p>
+        <div class="feed-card__footer">
+          <span class="anon">Anonymous #9,237</span>
+          <span class="heart-count">♥ 34</span>
+        </div>
+      </div>
+
+      <div class="feed-card" data-float="1">
+        <div class="feed-card__header">
+          <span class="tag tag--sad">Sad</span>
+          <span class="feed-card__time">5m ago</span>
+        </div>
+        <p>"Sometimes the loneliness hits differently at 2 AM. Just needed to say it somewhere."</p>
+        <div class="feed-card__footer">
+          <span class="anon">Anonymous #6,091</span>
+          <span class="heart-count">♥ 71</span>
+        </div>
+      </div>
+
+      <div class="feed-card" data-float="2">
+        <div class="feed-card__header">
+          <span class="tag tag--happy">Happy</span>
+          <span class="feed-card__time">12m ago</span>
+        </div>
+        <p>"Got the job I've been dreaming of for 3 years! Can't believe it still."</p>
+        <div class="feed-card__footer">
+          <span class="anon">Anonymous #1,125</span>
+          <span class="heart-count">♥ 29</span>
+        </div>
+      </div>
+
+      <div class="live-badge">
+        <span class="live-dot"></span> Live updating
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── HOW IT WORKS ───────────────── -->
+  <section class="how" id="how">
+    <div class="section-header">
+      <h2 class="section-title reveal">How AnonConfess Works</h2>
+      <p class="section-sub reveal reveal--delay-1">A simple, secure process designed to protect your identity while letting you be heard.</p>
+    </div>
+    <div class="how__steps">
+      <div class="step reveal reveal--delay-1">
+        <div class="step__orb step__orb--purple"></div>
+        <h3>1. Write your confession</h3>
+        <p>Type out your thoughts, secrets, or feelings. No account required to start sharing.</p>
+      </div>
+      <div class="step__connector"></div>
+      <div class="step reveal reveal--delay-2">
+        <div class="step__orb step__orb--pink"></div>
+        <h3>2. Choose mood &amp; category</h3>
+        <p>Tag your post with an emotion and topic to help others connect with your experience.</p>
+      </div>
+      <div class="step__connector"></div>
+      <div class="step reveal reveal--delay-3">
+        <div class="step__orb step__orb--blue"></div>
+        <h3>3. Share anonymously</h3>
+        <p>Post to the community. Your identity is never revealed, ensuring complete safety.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── LIVE FEED ───────────────── -->
+  <section class="live-feed" id="community">
+    <div class="live-feed__header">
+      <div>
+        <h2 class="section-title reveal">Live Community Feed</h2>
+        <p class="section-sub reveal reveal--delay-1">Real stories being shared right now</p>
+      </div>
+      <span class="live-badge live-badge--inline">
+        <span class="live-dot"></span> Live updating
+      </span>
+    </div>
+
+    <div class="confessions-grid" id="confessions-grid">
+      <!-- JS will inject cards -->
+    </div>
+
+    <div class="live-feed__footer reveal">
+      <a href="#" class="btn-outline">View More Confessions</a>
+    </div>
+  </section>
+
+  <!-- ───────────────── EMOTIONAL PULSE ───────────────── -->
+  <section class="pulse" id="insights">
+    <div class="pulse__text">
+      <h2 class="section-title reveal">Community Emotional Pulse</h2>
+      <p class="section-sub reveal reveal--delay-1">See how the world is feeling today. Our emotional heatmap visualises the collective mood of the community in real-time.</p>
+      <div class="pulse__legend reveal reveal--delay-2">
+        <span><i class="dot dot--love"></i>Love</span>
+        <span><i class="dot dot--happy"></i>Happy</span>
+        <span><i class="dot dot--sad"></i>Sad</span>
+        <span><i class="dot dot--fear"></i>Fear</span>
+        <span><i class="dot dot--angry"></i>Angry</span>
+      </div>
+    </div>
+    <div class="pulse__visual reveal reveal--delay-2">
+      <canvas id="pulseChart" width="260" height="260"></canvas>
+    </div>
+    <div class="pulse__activity reveal reveal--delay-3">
+      <h4>Live Activity</h4>
+      <ul id="activity-feed">
+        <li><span class="activity-name">Anonymous</span> posted a confession in <strong>Relationships</strong> <span class="activity-time">2m ago</span></li>
+        <li>12 people reacted to <strong>"Feeling invisible is real."</strong> <span class="activity-time">3m ago</span></li>
+        <li>Topic <strong>#AnxietyRelief</strong> is trending <span class="activity-time">5m ago</span></li>
+        <li>New member joined the community <span class="activity-time">7m ago</span></li>
+        <li><span class="activity-name">Anonymous</span> shared a happy moment <span class="activity-time">10m ago</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ───────────────── TRUST ───────────────── -->
+  <section class="trust">
+    <div class="section-header">
+      <h2 class="section-title reveal">Why People Trust AnonConfess</h2>
+      <p class="section-sub reveal reveal--delay-1">We've built a platform that prioritises your emotional well-being and privacy above all else.</p>
+    </div>
+    <div class="trust__cards">
+      <div class="trust-card reveal reveal--delay-1">
+        <div class="trust-card__icon trust-card__icon--purple">🛡</div>
+        <h3>Express Safely</h3>
+        <p>Our advanced anonymity protocols ensure your identity is never linked to your posts. Share your deepest thoughts without risk.</p>
+      </div>
+      <div class="trust-card reveal reveal--delay-2">
+        <div class="trust-card__icon trust-card__icon--pink">🤝</div>
+        <h3>Connect &amp; Heal</h3>
+        <p>Find comfort in knowing you're not alone. Connect with others who are going through similar experiences.</p>
+      </div>
+      <div class="trust-card reveal reveal--delay-3">
+        <div class="trust-card__icon trust-card__icon--blue">📊</div>
+        <h3>Track Patterns</h3>
+        <p>Gain insights into your emotional journey over time. Visualise your mood trends and understand your triggers.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── CTA ───────────────── -->
+  <section class="cta-section">
+    <div class="cta-section__inner reveal">
+      <h2>Your thoughts deserve a safe place.</h2>
+      <p>Join thousands of others who have found relief through anonymous sharing. It's free, secure, and supportive.</p>
+      <div class="hero__ctas">
+        <a href="frontend/loginpage/signup.html" class="btn-primary btn-primary--large">Start Sharing Now</a>
+        <a href="#" class="btn-outline btn-outline--light">Explore Confessions</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────── FOOTER ───────────────── -->
+  <footer class="footer">
+    <div class="footer__brand">
+      <p class="nav__logo-text"><span class="nav__logo-icon">◈</span> AnonConfess</p>
+      <p class="footer__tagline">A safe, anonymous community for emotional expression and support.</p>
+    </div>
+    <div class="footer__cols">
+      <div class="footer__col">
+        <h5>Platform</h5>
+        <a href="#">Home</a>
+        <a href="#">Confessions</a>
+        <a href="#">Insights</a>
+        <!-- <a href="#">Mobile App</a> -->
+      </div>
+      <div class="footer__col">
+        <h5>Community</h5>
+        <a href="#">Guidelines</a>
+        <a href="#">Safety Center</a>
+        <a href="#">Mental Health Resources</a>
+        <a href="#">Blog</a>
+      </div>
+      <div class="footer__col">
+        <h5>Legal</h5>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Contact Us</a>
+      </div>
+    </div>
+    <p class="footer__copy">© 2024 AnonConfess. All rights reserved.</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

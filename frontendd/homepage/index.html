@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnonConfess</title>
+  <link rel="stylesheet" href="new.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="logo-section">
+      <h1>AnonConfess</h1>
+      <button id="logoutBtn">Logout</button>
+    </div>
+
+    <div class="header-actions">
+      <button class="add-confession-btn">+ Add Confession</button>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <aside class="left-sidebar">
+
+      <!-- Left sidebar tools space -->
+       <div class="sidebar-title">Navigation</div>
+                <a class="sidebar-item active" href="#" data-filter="all">
+                    <span class="sidebar-item-icon">🏠</span>
+                    Home Feed
+                </a>
+                <a class="sidebar-item" href="../resources/resources.html">
+                    <span class="sidebar-item-icon">🔍</span>
+                    Get Help
+                </a>
+                <a class="sidebar-item" href="#">
+                    <span class="sidebar-item-icon">📊</span>
+                    Mood Insights
+                </a>
+                <a class="sidebar-item" href="#">
+                    <span class="sidebar-item-icon">💾</span>
+                    Saved Confessions
+                </a>
+                <a class="sidebar-item" href="../Profile Page/index.html">
+                    <span class="sidebar-item-icon">👤</span>
+                    My Profile
+                </a>
+            </div>
+
+            <h3>Mood Filter</h3>
+
+      <div class="mood-filter-list">
+  <button class="mood-filter-btn" data-mood="Love">❤️ Love</button>
+  <button class="mood-filter-btn" data-mood="Happy">😊 Happy</button>
+  <button class="mood-filter-btn" data-mood="Sad">😢 Sad</button>
+  <button class="mood-filter-btn" data-mood="Angry">😠 Angry</button>
+  <button class="mood-filter-btn" data-mood="Fear">😨 Fear</button>
+  <button class="mood-filter-btn" data-mood="Funny">😂 Funny</button>
+  <button class="mood-filter-btn" data-mood="Embarrassing">😳 Embarrassing</button>
+  <button class="mood-filter-btn" data-mood="Overthinking">💭 Overthinking</button>
+</div>
+<h3>Category Filter</h3>
+<div class="category-filter-list">
+  <button class="category-filter-btn" data-category="Relationships">❤️ Relationships</button>
+  <button class="category-filter-btn" data-category="Exam Stress">📚 Exam Stress</button>
+  <button class="category-filter-btn" data-category="Work Life">💼 Work Life</button>
+  <button class="category-filter-btn" data-category="Embarrassing">😳 Embarrassing</button>
+  <button class="category-filter-btn" data-category="Late Night Thoughts">🌙 Late Night Thoughts</button>
+  <button class="category-filter-btn" data-category="Overthinking">💭 Overthinking</button>
+</div>
+
+    </aside>
+
+
+    <section class="main-feed">
+      <div class="feed-header">
+        <h2>Recent Confessions</h2>
+      </div>
+
+      <div class="confession-feed">
+        <!-- Confession cards will appear here -->
+      </div>
+    </section>
+
+    <aside class="right-sidebar">
+      <!-- Right sidebar tools space -->
+       <div class="sidebar-card trending-card">
+  <h3>🔥 Trending Categories This Week</h3>
+  <div class="trending-list">
+    <!-- Trending categories will appear here -->
+  </div>
+</div>
+<br>
+<div class="sidebar-card mood-distribution-card">
+  <h3>📊 Community Mood Today</h3>
+  <div class="mood-distribution-list">
+    <!-- Mood rows will appear here -->
+  </div>
+  <p class="mood-distribution-total"></p>
+</div>
+    </aside>
+
+
+    <!-- Add Confession Modal -->
+<div class="modal-overlay">
+  <div class="modal">
+    
+    <div class="modal-header">
+      <h2>Share Your Confession</h2>
+      <button class="close-modal-btn">&times;</button>
+    </div>
+
+    <form class="confession-form">
+      
+      <div class="identity-toggle">
+        <button type="button" class="toggle-btn active">Anonymous</button>
+        <button type="button" class="toggle-btn">With Identity</button>
+      </div>
+
+      <div class="name-field">
+        <label for="userName">Your Name</label>
+        <input type="text" id="userName" name="userName" />
+      </div>
+
+      <div class="mood-section">
+        <label>Select Mood</label>
+        <div class="mood-options">
+          <button type="button" data-mood="love">❤️ Love</button>
+          <button type="button" data-mood="happy">😊 Happy</button>
+          <button type="button" data-mood="sad">😢 Sad</button>
+          <button type="button" data-mood="angry">😠 Angry</button>
+          <button type="button" data-mood="fear">😨 Fear</button>
+          <button type="button" data-mood="funny">😂 Funny</button>
+          <button type="button" data-mood="embarrasing">😳 Embarrassing</button>
+          <button type="button" data-mood="overthinking">💭 Overthinking</button>
+        </div>
+      </div>
+
+      <div class="category-section">
+        <label for="category">Category</label>
+        <select id="category" name="category">
+          <option value="">Choose a category...</option>
+          <option value="Relationships">Relationships</option>
+          <option value="Exam Stress">Exam Stress</option>
+          <option value="Work Life">Work Life</option>
+          <option value="Embarrassing">Embarrassing</option>
+          <option value="Late Night Thoughts">Late Night Thoughts</option>
+          <option value="Overthinking">Overthinking</option>
+        </select>
+      </div>
+
+      <div class="text-section">
+        <label for="confessionText">Your Confession</label>
+        <textarea id="confessionText" name="confessionText" rows="6"></textarea>
+      </div>
+
+      <div class="submit-section">
+        <button type="submit" class="post-btn">Post Confession</button>
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+  </main>
+
+
+  <!-- Edit Confession Modal -->
+<div class="edit-modal-overlay">
+  <div class="edit-modal">
+    <div class="edit-modal-header">
+      <h2>Edit Confession</h2>
+      <button class="close-edit-modal-btn">&times;</button>
+    </div>
+
+    <form class="edit-confession-form">
+      <div class="edit-text-section">
+        <label for="editConfessionText">Update Your Confession</label>
+        <textarea id="editConfessionText" rows="6"></textarea>
+      </div>
+
+      <div class="edit-submit-section">
+        <button type="submit" class="save-edit-btn">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+<!-- Comment Modal -->
+<div class="comment-modal-overlay">
+  <div class="comment-modal">
+    <div class="comment-modal-header">
+      <h2>Add Comment</h2>
+      <button class="close-comment-modal-btn">&times;</button>
+    </div>
+
+    <form class="comment-form">
+      <div class="comment-text-section">
+        <label for="commentText">Your Comment</label>
+        <textarea id="commentText" rows="5"></textarea>
+      </div>
+
+      <div class="comment-submit-section">
+        <button type="submit" class="post-comment-btn">Post Comment</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script type="module" src="js/new.js"></script>
+</body>
+</html>

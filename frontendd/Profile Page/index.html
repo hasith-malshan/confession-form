@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AnonConfess – Personal Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">🎭 AnonConfess</div>
+  <div class="sidebar-section">Dashboard</div>
+  <div class="nav-item" onclick="smoothScroll('top')"><span class="nav-icon">🏠</span> Home</div>
+  <div class="nav-item active" onclick="smoothScroll('top')"><span class="nav-icon">👤</span> My Profile</div>
+  <div class="nav-item" onclick="smoothScroll('graphs')"><span class="nav-icon">📊</span> Insights</div>
+  <div class="nav-item"><span class="nav-icon">🌍</span> Explore</div>
+  <div class="sidebar-section">Settings</div>
+  <div class="nav-item" onclick="openNotifPage()"><span class="nav-icon">🔔</span> Notifications</div>
+  <div class="nav-item nav-logout" onclick="openModal('logoutModal')"><span class="nav-icon">🚪</span> Logout</div>
+  <div class="sidebar-bottom">
+    <div class="avatar-sm" id="sidebarAvatar">A</div>
+    <div class="user-info-sm">
+      <div class="username-sm" id="sidebarUsername">Anonymous #2841</div>
+      <div class="status-label">
+        <span class="status-dot" id="statusDot"></span>
+        <span id="statusText">Online</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main" id="top">
+
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="header-title">Personal Dashboard</div>
+      <div class="header-sub">Welcome back to your safe space. 💜</div>
+    </div>
+    <div class="header-actions">
+      <button class="btn-primary" onclick="openModal('confessionModal')">✨ New Confession</button>
+      <button class="notif-btn" onclick="toggleNotif()" id="notifBtn">
+        🔔<span class="notif-badge" id="notifBadge">3</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- NOTIFICATION DROPDOWN -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-header">
+      <span class="notif-title">Notifications</span>
+      <span class="mark-read-btn" onclick="markAllRead()">Mark all read</span>
+    </div>
+    <div id="notifList"></div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+      <div class="avatar-lg" id="profileAvatar">A</div>
+      <div class="profile-info">
+        <div class="profile-name" id="profileName">Anonymous #2841</div>
+        <div class="profile-meta">
+          <span class="meta-item">📅 Member since <span class="highlight" id="memberSince">Jan 2025</span></span>
+          <span class="meta-item">🎭 <span class="highlight" id="confessionCount">24</span> confessions</span>
+          <span class="streak-badge">🔥 <span id="streakCount">5</span> day streak</span>
+        </div>
+      </div>
+      <div class="profile-actions">
+        <button class="btn-outline" onclick="openModal('editProfileModal')">✏️ Edit Profile</button>
+      </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#ede9ff;">🎭</div>
+        <div><div class="stat-val" id="statConfessions">2</div><div class="stat-label">Confessions</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fce4ec;">❤️</div>
+        <div><div class="stat-val" id="statReactions">1.2K</div><div class="stat-label">Reactions</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#e8f5e9;">💬</div>
+        <div><div class="stat-val" id="statComments">0</div><div class="stat-label">Comments</div></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:#fff8e1;">🎨</div>
+        <div><div class="stat-val" id="statMoods">5</div><div class="stat-label">Mood Types</div></div>
+      </div>
+    </div>
+
+    <!-- GRAPHS ROW 1 -->
+    <div class="graphs-grid" id="graphs">
+      <div class="card">
+        <div class="card-title">Emotional Snapshot</div>
+        <div class="card-sub">Your dominant feelings this month</div>
+        <div class="donut-wrap">
+          <div class="donut-container">
+            <canvas id="donutChart" width="160" height="160"></canvas>
+            <div class="donut-center">
+              <span class="donut-emoji" id="topMoodEmoji">😢</span>
+              <div class="donut-pct" id="topMoodPct">40%</div>
+              <div class="donut-label-text" id="topMoodName">Sad</div>
+            </div>
+          </div>
+          <div class="donut-legend" id="donutLegend"></div>
+          <div class="donut-footer">
+            <div class="footer-col"><div class="footer-label">Top Mood</div><div class="footer-val" id="footerTopMood">Sad 😢</div></div>
+            <div class="footer-col"><div class="footer-label">Balance</div><div class="footer-val" id="footerBalance" style="color:var(--green)">45% Positive</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="chart-header">
+          <div class="chart-title-block">
+            <div class="card-title">Mood Trend Over Time</div>
+            <div class="card-sub">How your feelings have changed recently</div>
+          </div>
+          <select class="range-select" id="trendRange" onchange="updateTrendChart()">
+            <option value="30">Last 30 Days</option>
+            <option value="14">Last 14 Days</option>
+            <option value="7">Last 7 Days</option>
+          </select>
+        </div>
+        <div class="chart-legend" id="trendLegend"></div>
+        <canvas id="lineChart" class="line-canvas" height="180"></canvas>
+      </div>
+    </div>
+
+    <!-- GRAPHS ROW 2 -->
+    <div class="graphs-grid2">
+      <div class="card">
+        <div class="card-title">Most Shared Categories</div>
+        <div class="card-sub">Topics occupying your mind</div>
+        <div id="categoryBars"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Emotional Balance</div>
+        <div class="card-sub">Positive vs. Negative sentiment</div>
+        <div class="pie-balance-wrap">
+          <canvas id="balancePie" class="pie-balance-canvas" width="120" height="120"></canvas>
+          <div class="balance-details">
+            <div class="balance-row">
+              <div class="balance-row-label"><span style="color:var(--green);">Positive</span><span id="positivePct">45%</span></div>
+              <div class="bal-track"><div class="bal-fill-pos" id="posBar" style="width:45%"></div></div>
+            </div>
+            <div class="balance-row">
+              <div class="balance-row-label"><span style="color:var(--accent);">Negative</span><span id="negativePct">55%</span></div>
+              <div class="bal-track"><div class="bal-fill-neg" id="negBar" style="width:55%"></div></div>
+            </div>
+            <div class="balance-quote" id="balanceQuote">"Expressing emotions regularly helps improve emotional clarity."</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFLECTION BANNER -->
+    <div class="reflection-banner">
+      <div class="reflection-icon">🧠</div>
+      <div>
+        <div class="reflection-title">Your Emotional Reflection</div>
+        <div class="reflection-text" id="reflectionText">
+          This month you shared many confessions related to <strong>relationships</strong> and <strong>late night reflections</strong>. You're doing great by letting it out. 💜
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM SECTION -->
+    <div class="bottom-grid">
+      <div>
+        <div class="section-header">
+          <div class="card-title">Your Recent Confessions</div>
+          <span style="font-size:0.75rem;color:var(--muted);">Click a post to view comments</span>
+        </div>
+        <div class="confessions-list" id="confessionsList"></div>
+      </div>
+      <div class="card" style="height:fit-content">
+        <div class="section-header">
+          <div class="card-title">Journey</div>
+          <a class="view-all">View All</a>
+        </div>
+        <div class="journey-list" id="journeyList"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== POST VIEW MODAL ===== -->
+<div class="overlay" id="postViewModal">
+  <div class="post-modal">
+    <div class="post-modal-header">
+      <div class="post-modal-title">💬 Post &amp; Comments</div>
+      <button class="modal-close" onclick="closeModal('postViewModal')">✕</button>
+    </div>
+    <div class="post-modal-post" id="postModalContent"></div>
+    <div class="post-modal-comments-header">
+      <span id="postCommentCount">0 Comments</span>
+    </div>
+    <div class="post-modal-comments" id="postModalComments"></div>
+    <div class="post-modal-reply">
+      <div class="reply-avatar" id="replyAvatar">A</div>
+      <div class="reply-input-wrap">
+        <textarea class="reply-textarea" id="replyText" placeholder="Write a comment... 💜" oninput="updateReplyCount()"></textarea>
+        <div class="reply-reaction-row">
+          <span class="reply-reaction-label">React:</span>
+          <div class="reply-reaction-btns">
+            <button class="react-pick-btn" onclick="pickReaction('❤️')" title="Love">❤️</button>
+            <button class="react-pick-btn" onclick="pickReaction('😢')" title="Sad">😢</button>
+            <button class="react-pick-btn" onclick="pickReaction('😂')" title="Haha">😂</button>
+            <button class="react-pick-btn" onclick="pickReaction('😮')" title="Wow">😮</button>
+            <button class="react-pick-btn" onclick="pickReaction('🤗')" title="Support">🤗</button>
+            <button class="react-pick-btn" onclick="pickReaction('🔥')" title="Fire">🔥</button>
+          </div>
+          <span class="selected-reaction-preview" id="selectedReactionPreview"></span>
+        </div>
+        <div class="reply-footer">
+          <span class="char-count"><span id="replyCharCount">0</span>/300</span>
+          <button class="btn-primary reply-send-btn" onclick="submitComment()">Send 💬</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FULL NOTIFICATIONS PAGE ===== -->
+<div class="overlay" id="notifPageOverlay">
+  <div class="notif-page">
+    <div class="notif-page-header">
+      <div>
+        <div class="notif-page-title">🔔 All Notifications</div>
+        <div class="notif-page-sub">Everything you've received so far</div>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;">
+        <span class="mark-read-btn" onclick="markAllRead()">Mark all read</span>
+        <button class="modal-close" onclick="closeNotifPage()">✕</button>
+      </div>
+    </div>
+    <div class="notif-page-list" id="notifPageList"></div>
+  </div>
+</div>
+
+<!-- ===== LOGOUT CONFIRM MODAL ===== -->
+<div class="overlay" id="logoutModal">
+  <div class="modal logout-modal">
+    <div class="logout-icon">🚪</div>
+    <div class="modal-title" style="text-align:center;">Log out of AnonConfess?</div>
+    <div class="modal-sub" style="text-align:center;">You'll need to log back in to access your confessions and profile.</div>
+    <div class="logout-actions">
+      <button class="btn-outline logout-cancel-btn" onclick="closeModal('logoutModal')">Cancel</button>
+      <button class="btn-danger" onclick="confirmLogout()">Yes, Log Out</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== LOGGED OUT SCREEN ===== -->
+<div id="loggedOutScreen" class="logged-out-screen" style="display:none;">
+  <div class="loggedout-card">
+    <div class="loggedout-icon">🎭</div>
+    <div class="loggedout-title">AnonConfess</div>
+    <div class="loggedout-sub">You have been logged out successfully.<br>See you soon! 💜</div>
+    <button class="btn-primary loggedout-btn" onclick="loginAgain()">🔑 Log Back In</button>
+  </div>
+</div>
+
+<!-- ===== NEW CONFESSION MODAL ===== -->
+<div class="overlay" id="confessionModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('confessionModal')">✕</button>
+    <div class="modal-title">✨ New Confession</div>
+    <div class="modal-sub">Share your feelings anonymously. You're safe here.</div>
+    <div class="form-group">
+      <label class="form-label">How are you feeling?</label>
+      <div class="mood-picker">
+        <div class="mood-opt selected" data-mood="Happy" onclick="selectMood(this)">😊 Happy</div>
+        <div class="mood-opt" data-mood="Sad" onclick="selectMood(this)">😢 Sad</div>
+        <div class="mood-opt" data-mood="Angry" onclick="selectMood(this)">😤 Angry</div>
+        <div class="mood-opt" data-mood="Love" onclick="selectMood(this)">🥰 Love</div>
+        <div class="mood-opt" data-mood="Fear" onclick="selectMood(this)">😰 Fear</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Category</label>
+      <select class="form-select" id="confessionCategory">
+        <option>Relationships</option><option>School</option><option>Work</option>
+        <option>Embarrassing</option><option>Late Night</option><option>Family</option>
+        <option>Personal</option><option>Other</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your Confession</label>
+      <textarea class="form-textarea" id="confessionText" placeholder="Write your feelings here... No judgment, only support. 💜" oninput="updateCharCount()"></textarea>
+      <div class="char-count"><span id="charCount">0</span>/500</div>
+    </div>
+    <button class="btn-primary full-btn" onclick="submitConfession()">🚀 Post Confession</button>
+  </div>
+</div>
+
+<!-- ===== EDIT PROFILE MODAL — username only ===== -->
+<div class="overlay" id="editProfileModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('editProfileModal')">✕</button>
+    <div class="modal-title">✏️ Edit Profile</div>
+    <div class="modal-sub">You can update your display name. It must be unique.</div>
+    <div class="form-group">
+      <label class="form-label">Display Name</label>
+      <input class="form-input" id="editName" type="text" placeholder="e.g. Anonymous #2841" oninput="clearUsernameError()">
+      <div class="field-error" id="usernameError" style="display:none;"></div>
+    </div>
+    <!-- Read-only info fields -->
+    <div class="profile-readonly-row">
+      <div class="readonly-item">
+        <span class="readonly-label">📅 Member Since</span>
+        <span class="readonly-val" id="roMemberSince">Jan 2025</span>
+      </div>
+      <div class="readonly-item">
+        <span class="readonly-label">🟢 Status</span>
+        <span class="readonly-val" id="roStatus">Online</span>
+      </div>
+    </div>
+    <button class="btn-primary full-btn" onclick="saveProfile()" style="margin-top:20px;">💾 Save Username</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

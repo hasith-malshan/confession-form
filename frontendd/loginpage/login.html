@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnonConfess - Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo logo-main"></div>
+        <span>AnonConfess</span>
+      </div>
+
+      <nav class="top-nav">
+        <a href="#">How it Works</a>
+        <a href="#">Community</a>
+        <a href="#">Insights</a>
+        <a href="#">Help</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-gradient">Get Started</a>
+      </div>
+    </header>
+
+    <main class="auth-layout">
+      <aside class="left-panel">
+        <div class="left-inner">
+          <div class="side-brand">
+            <div class="logo logo-light"></div>
+            <span>AnonConfess</span>
+          </div>
+
+          <div class="side-points">
+            <div class="side-item"><span class="icon">😊</span><span>Share freely</span></div>
+            <div class="side-item"><span class="icon">🔒</span><span>Stay anonymous</span></div>
+            <div class="side-item"><span class="icon">💬</span><span>Support each other</span></div>
+          </div>
+
+          <p class="side-note">
+            A safe, supportive place<br>
+            to unburden your mind<br>
+            without judgment.
+          </p>
+        </div>
+      </aside>
+
+      <section class="form-shell login-shell">
+        <div class="form-box login-box">
+          <div class="mini-brand">
+            <div class="logo logo-main"></div>
+            <span>AnonConfess</span>
+          </div>
+
+          <h1>Welcome Back</h1>
+          <p class="subtext">Log in to share your thoughts safely.</p>
+
+          <div class="auth-error" id="loginError" style="display:none;"></div>
+
+          <form id="loginForm" class="auth-form">
+            <input type="email" id="loginUsername" placeholder="Email" required>
+            <input type="password" id="loginPassword" placeholder="Password" required>
+
+            <button type="submit" class="main-action">Log In</button>
+
+            <p id="message"></p>
+          </form>
+
+          <p class="switch-link">
+            Don't have an account?
+            <a href="signup.html">Sign Up</a>
+          </p>
+        </div>
+
+        <div class="bottom-note">
+          By signing up, you agree to our
+          <a href="#">Terms of Service</a> and
+          <a href="#">Privacy Policy</a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+ 
+  <script src="login.js"></script>
+</body>
+</html>

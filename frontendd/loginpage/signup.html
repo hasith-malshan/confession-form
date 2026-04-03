@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AnonConfess - Sign Up</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="auth.css" />
+</head>
+<body class="auth-body">
+  <div class="auth-page">
+    <header class="topbar">
+      <div class="brand">
+        <div class="logo logo-main"></div>
+        <span>AnonConfess</span>
+      </div>
+
+      <nav class="top-nav">
+        <a href="#">How it Works</a>
+        <a href="#">Community</a>
+        <a href="#">Insights</a>
+        <a href="#">Help</a>
+      </nav>
+
+      <div class="top-actions">
+        <a href="login.html" class="btn btn-outline">Log In</a>
+        <a href="signup.html" class="btn btn-gradient">Get Started</a>
+      </div>
+    </header>
+
+    <main class="auth-layout">
+      <aside class="left-panel">
+        <div class="left-inner">
+          <div class="side-brand">
+            <div class="logo logo-light"></div>
+            <span>AnonConfess</span>
+          </div>
+
+          <div class="side-points">
+            <div class="side-item"><span class="icon">😊</span><span>Share freely</span></div>
+            <div class="side-item"><span class="icon">🔒</span><span>Stay anonymous</span></div>
+            <div class="side-item"><span class="icon">💬</span><span>Support each other</span></div>
+          </div>
+
+          <p class="side-note">
+            A safe, supportive place<br>
+            to unburden your mind<br>
+            without judgment.
+          </p>
+        </div>
+      </aside>
+
+      <section class="form-shell signup-shell">
+        <div class="form-box signup-box">
+          <div class="mini-brand">
+            <div class="logo logo-main"></div>
+            <span>AnonConfess</span>
+          </div>
+
+          <h1>Sign Up</h1>
+          <p class="subtext">Create your account to share what you feel anonymously.</p>
+
+          <div class="auth-error" id="signupError" style="display:none;"></div>
+
+          <form id="signupForm" class="auth-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <div class="name-row">
+              <input type="text" id="fname" placeholder="First Name" required>
+              <input type="text" id="lname" placeholder="Last Name" required>
+            </div>
+            <input type="email" id="signupEmail" placeholder="Email Address" required>
+            <input type="tel" id="mobileNo" placeholder="Mobile Number" pattern="^\+?[0-9]{10,15}$" required>
+            <input type="password" id="signupPassword" placeholder="Password (min 8 chars, upper+lower+digit)" required>
+            <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+
+            <button type="submit" class="main-action">Sign Up</button>
+
+            <p id="message"></p>
+          </form>
+
+          <p class="terms-line">
+            By signing up, you agree to our
+            <a href="#">Terms of Service</a> and
+            <a href="#">Privacy Policy</a>
+          </p>
+
+          <p class="switch-link">
+            Already have an account?
+            <a href="login.html">Log In</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  
+  <script src="signup.js"></script>
+</body>
+</html>
