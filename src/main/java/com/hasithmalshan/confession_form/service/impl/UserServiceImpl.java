@@ -103,6 +103,12 @@ public class UserServiceImpl implements UserService {
         if (updateDTO.getPassword() != null) {
             existingUser.setPassword(passwordEncoder.encode(updateDTO.getPassword()));
         }
+        if (updateDTO.getRole() != null) {
+            existingUser.setRole(Role.valueOf(updateDTO.getRole()));
+        }
+        if (updateDTO.getActive() != null) {
+            existingUser.setActive(updateDTO.getActive());
+        }
 
         User updatedUser = userRepository.save(existingUser);
         return convertToDTO(updatedUser);
