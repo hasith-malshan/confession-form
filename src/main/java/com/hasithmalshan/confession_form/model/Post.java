@@ -54,6 +54,6 @@ public class Post {
     private List<PostReact> react = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "varchar(50)")
     private VisibilityLevel visibilityLevel;
 }
