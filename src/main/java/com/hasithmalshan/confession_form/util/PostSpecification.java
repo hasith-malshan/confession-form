@@ -13,7 +13,7 @@ public class PostSpecification {
 
     public static Specification<Post> hasMood(String mood) {
         return (root, query, criteriaBuilder) ->
-                criteriaBuilder.like(criteriaBuilder.lower(root.get("category")), "%" + mood.toLowerCase() + "%");
+                criteriaBuilder.like(criteriaBuilder.lower(root.get("mood")), "%" + mood.toLowerCase() + "%");
     }
 
     public static Specification<Post> hasVisibility(String visibility) {
